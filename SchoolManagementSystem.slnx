@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SchoolManagementSystem.BLL/SchoolManagementSystem.BLL.csproj" />
+  <Project Path="SchoolManagementSystem.DAL/SchoolManagementSystem.DAL.csproj" />
+  <Project Path="SchoolManagementSystem.Models/SchoolManagementSystem.Models.csproj" />
+  <Project Path="SchoolManagementSystem.UI/SchoolManagementSystem.UI.csproj" />
+</Solution>

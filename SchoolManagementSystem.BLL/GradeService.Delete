@@ -1,0 +1,15 @@
+﻿public void Delete(int gradeId)
+{
+    using (var conn = SchoolManagementSystem.DatabaseHelper.GetConnection())
+    {
+        conn.Open();
+
+        string query = "DELETE FROM Grades WHERE GradeId = @id";
+
+        using (var cmd = new SqlCommand(query, conn))
+        {
+            cmd.Parameters.AddWithValue("@id", gradeId);
+            cmd.ExecuteNonQuery();
+        }
+    }
+}

@@ -1,0 +1,864 @@
+﻿using SchoolManagementSystem.BLL;
+using SchoolManagementSystem.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using ClosedXML.Excel;
+using Microsoft.Win32;
+using System.IO;
+
+namespace SchoolManagementSystem.UI
+{
+    public partial class FinanceWindow : Window
+    {
+        // ===================== SERVICES =====================
+        private readonly FinanceService _financeService = new FinanceService();
+        private readonly StudentService _studentService = new StudentService();
+        private readonly EmployeeService _employeeService = new EmployeeService();
+        private readonly FeeTypeService _feeTypeService = new FeeTypeService();
+
+        // ===================== DATA COLLECTIONS =====================
+        private List<Student> _students = new();
+        private List<Employee> _employees = new();
+        private List<FeeType> _feeTypes = new();
+        private List<Transaction> _allTransactions = new();
+
+        // ===================== STATE =====================
+        private Transaction _selectedTransaction;
+        private bool _isEditMode = false;
+
+        // ===================== STUDENT SEARCH STATE =====================
+        private Student _selectedStudent = null;
+        private bool _suppressStudentSearch = false;
+
+        public FinanceWindow()
+        {
+            InitializeComponent();
+            dpTransactionDate.SelectedDate = DateTime.Now;
+        }
+
+        // ===================== WINDOW LOADED =====================
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                LoadAllData();
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في تحميل البيانات: {ex.Message}");
+            }
+        }
+
+        // ===================== LOAD ALL DATA =====================
+        private void LoadAllData()
+        {
+            try
+            {
+                _students = _studentService.GetAllStudents() ?? new List<Student>();
+                _employees = _employeeService.GetAllEmployees() ?? new List<Employee>();
+                _feeTypes = _feeTypeService.GetAll() ?? new List<FeeType>();
+
+                // الموظفون ونوع الرسوم وفلتر الرسوم
+                cmbEmployees.ItemsSource = new ObservableCollection<Employee>(_employees);
+                cmbFeeType.ItemsSource = new ObservableCollection<FeeType>(_feeTypes);
+                cmbFilterFeeType.ItemsSource = new ObservableCollection<FeeType>(_feeTypes);
+
+                // أنواع الحركات
+                var transactionTypes = new List<string> { "قبض", "صرف", "راتب" };
+                cmbType.ItemsSource = transactionTypes;
+
+                var filterTypes = new List<string> { "الكل", "قبض", "صرف", "راتب" };
+                cmbFilterType.ItemsSource = filterTypes;
+
+                cmbType.SelectedIndex = 0;
+                cmbFilterType.SelectedIndex = 0;
+
+                // الأشهر
+                var months = new List<MonthItem>
+                {
+                    new MonthItem { Value = 1,  Name = "يناير"  },
+                    new MonthItem { Value = 2,  Name = "فبراير" },
+                    new MonthItem { Value = 3,  Name = "مارس"   },
+                    new MonthItem { Value = 4,  Name = "أبريل"  },
+                    new MonthItem { Value = 5,  Name = "مايو"   },
+                    new MonthItem { Value = 6,  Name = "يونيو"  },
+                    new MonthItem { Value = 7,  Name = "يوليو"  },
+                    new MonthItem { Value = 8,  Name = "أغسطس"  },
+                    new MonthItem { Value = 9,  Name = "سبتمبر" },
+                    new MonthItem { Value = 10, Name = "أكتوبر" },
+                    new MonthItem { Value = 11, Name = "نوفمبر" },
+                    new MonthItem { Value = 12, Name = "ديسمبر" }
+                };
+
+                cmbMonth.ItemsSource = months;
+                cmbMonth.DisplayMemberPath = "Name";
+                cmbMonth.SelectedValuePath = "Value";
+                cmbMonth.SelectedIndex = DateTime.Now.Month - 1;
+
+                cmbFilterMonth.ItemsSource = months;
+                cmbFilterMonth.DisplayMemberPath = "Name";
+                cmbFilterMonth.SelectedValuePath = "Value";
+
+                // السنوات الدراسية
+                var academicYears = new List<string>
+                {
+                    "2024-2025", "2025-2026", "2026-2027", "2027-2028"
+                };
+                cmbAcademicYear.ItemsSource = academicYears;
+                cmbAcademicYear.SelectedIndex = 0;
+
+                // طرق الدفع
+                var paymentMethods = new List<string>
+                {
+                    "نقدي", "تحويل بنكي", "شيك", "بطاقة ائتمان"
+                };
+                cmbPaymentMethod.ItemsSource = paymentMethods;
+                cmbPaymentMethod.SelectedIndex = 0;
+
+                RefreshTransactions();
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في تحميل البيانات: {ex.Message}");
+            }
+        }
+
+        // ===================== AUTO-CALCULATE REMAINING =====================
+        private void txtAmount_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            decimal total = 0;
+            decimal paid = 0;
+
+            decimal.TryParse(txtTotalRequiredAmount.Text, out total);
+            decimal.TryParse(txtAmount.Text, out paid);
+
+            decimal remaining = total - paid;
+            txtRemainingAmount.Text = remaining >= 0
+                ? remaining.ToString("N2")
+                : "0.00";
+        }
+
+        // ===================== TRANSACTION TYPE CHANGED =====================
+        private void cmbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                string selectedType = cmbType.SelectedItem?.ToString();
+
+                switch (selectedType)
+                {
+                    case "قبض":
+                        // تفعيل مربع بحث الطالب
+                        if (txtStudentSearch != null)
+                            txtStudentSearch.IsEnabled = true;
+
+                        cmbFeeType.IsEnabled = true;
+                        cmbMonth.IsEnabled = true;
+                        cmbAcademicYear.IsEnabled = true;
+                        cmbEmployees.IsEnabled = false;
+                        cmbEmployees.SelectedIndex = -1;
+                        break;
+
+                    case "راتب":
+                        cmbEmployees.IsEnabled = true;
+
+                        // تعطيل مربع بحث الطالب ومسحه
+                        if (txtStudentSearch != null)
+                        {
+                            txtStudentSearch.IsEnabled = false;
+                            txtStudentSearch.Clear();
+                        }
+                        _selectedStudent = null;
+
+                        cmbFeeType.IsEnabled = false;
+                        cmbMonth.IsEnabled = false;
+                        cmbFeeType.SelectedIndex = -1;
+                        cmbMonth.SelectedIndex = -1;
+                        break;
+
+                    case "صرف":
+                        // تعطيل مربع بحث الطالب ومسحه
+                        if (txtStudentSearch != null)
+                        {
+                            txtStudentSearch.IsEnabled = false;
+                            txtStudentSearch.Clear();
+                        }
+                        _selectedStudent = null;
+
+                        cmbEmployees.IsEnabled = false;
+                        cmbFeeType.IsEnabled = false;
+                        cmbMonth.IsEnabled = false;
+                        cmbEmployees.SelectedIndex = -1;
+                        cmbFeeType.SelectedIndex = -1;
+                        cmbMonth.SelectedIndex = -1;
+                        break;
+
+                    default:
+                        if (txtStudentSearch != null)
+                            txtStudentSearch.IsEnabled = false;
+
+                        cmbEmployees.IsEnabled = false;
+                        cmbFeeType.IsEnabled = false;
+                        cmbMonth.IsEnabled = false;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في تغيير النوع: {ex.Message}");
+            }
+        }
+
+        // ===================== STUDENT SEARCH - TEXT CHANGED =====================
+        private void txtStudentSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // تجاهل الحدث إذا كنا نملأ الحقل برمجياً
+            if (_suppressStudentSearch) return;
+
+            // عند تغيير النص يدوياً نصفّر الاختيار
+            _selectedStudent = null;
+
+            string input = txtStudentSearch.Text.Trim();
+
+            if (string.IsNullOrEmpty(input))
+            {
+                popupStudents.IsOpen = false;
+                return;
+            }
+
+            // تقسيم النص المُدخل إلى كلمات مستقلة
+            var inputWords = input
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(w => w.ToLower())
+                .ToList();
+
+            // البحث: كل كلمة مُدخلة يجب أن تتطابق جزئياً مع الاسم الكامل
+            var results = _students
+                .Where(s =>
+                {
+                    string fullName = s.FullName?.ToLower() ?? "";
+                    return inputWords.All(word => fullName.Contains(word));
+                })
+                .Take(5)
+                .ToList();
+
+            if (results.Count == 0)
+            {
+                popupStudents.IsOpen = false;
+                return;
+            }
+
+            lstStudentResults.ItemsSource = results;
+            popupStudents.IsOpen = true;
+        }
+
+        // ===================== STUDENT SEARCH - MOUSE CLICK ON LIST =====================
+        private void lstStudentResults_MouseLeftButtonUp(object sender,
+            System.Windows.Input.MouseButtonEventArgs e)
+        {
+            SelectStudentFromList();
+        }
+
+        // ===================== STUDENT SEARCH - KEYBOARD ENTER ON LIST =====================
+        private void lstStudentResults_KeyDown(object sender,
+            System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+                SelectStudentFromList();
+        }
+
+        // ===================== SELECT STUDENT FROM POPUP LIST =====================
+        private void SelectStudentFromList()
+        {
+            if (lstStudentResults.SelectedItem is Student student)
+            {
+                _selectedStudent = student;
+
+                // نملأ الحقل باسم الطالب دون إعادة تشغيل البحث
+                _suppressStudentSearch = true;
+                txtStudentSearch.Text = student.FullName;
+                _suppressStudentSearch = false;
+
+                popupStudents.IsOpen = false;
+
+                // نقل التركيز للحقل التالي
+                txtAmount.Focus();
+            }
+        }
+
+        // ===================== STUDENT SEARCH - LOST FOCUS =====================
+        private void txtStudentSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // ننتظر لحظة قصيرة كي لا نغلق القائمة قبل أن ينفّذ حدث الضغط
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (!lstStudentResults.IsMouseOver)
+                    popupStudents.IsOpen = false;
+            }), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
+        // ===================== VALIDATE INPUT =====================
+        private bool ValidateInput()
+        {
+            string type = cmbType.SelectedItem?.ToString();
+
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                ShowWarning("اختر نوع الحركة");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtAmount.Text) ||
+                !decimal.TryParse(txtAmount.Text, out decimal amount) || amount <= 0)
+            {
+                ShowWarning("أدخل مبلغاً صحيحاً وأكبر من الصفر");
+                txtAmount.Focus();
+                return false;
+            }
+
+            if (cmbPaymentMethod.SelectedIndex == -1)
+            {
+                ShowWarning("اختر طريقة الدفع");
+                return false;
+            }
+
+            if (type == "قبض")
+            {
+                // التحقق من اختيار الطالب عبر مربع البحث
+                if (_selectedStudent == null)
+                {
+                    ShowWarning("اختر الطالب من نتائج البحث");
+                    txtStudentSearch?.Focus();
+                    return false;
+                }
+
+                if (cmbFeeType.SelectedIndex == -1)
+                {
+                    ShowWarning("اختر نوع الرسوم");
+                    return false;
+                }
+            }
+            else if (type == "راتب")
+            {
+                if (cmbEmployees.SelectedIndex == -1)
+                {
+                    ShowWarning("اختر الموظف");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // ===================== ADD TRANSACTION =====================
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (!ValidateInput()) return;
+
+                string type = cmbType.SelectedItem.ToString();
+                decimal amount = decimal.Parse(txtAmount.Text);
+
+                decimal.TryParse(txtTotalRequiredAmount.Text, out decimal totalRequired);
+                decimal remaining = totalRequired - amount;
+                if (remaining < 0) remaining = 0;
+
+                var transaction = new Transaction
+                {
+                    Type = type,
+                    Amount = amount,
+                    TotalRequiredAmount = totalRequired,
+                    RemainingAmount = remaining,
+                    Description = txtDesc.Text.Trim(),
+                    Date = dpTransactionDate.SelectedDate ?? DateTime.Now,
+                    PaymentMethod = cmbPaymentMethod.SelectedItem.ToString(),
+                    AcademicYear = cmbAcademicYear.SelectedItem?.ToString()
+                };
+
+                if (type == "قبض")
+                {
+                    // استخدام الطالب المختار من مربع البحث
+                    if (_selectedStudent != null)
+                    {
+                        transaction.StudentId = _selectedStudent.StudentId;
+                        transaction.StudentName = _selectedStudent.FullName;
+                    }
+
+                    var feeTypeId = cmbFeeType.SelectedValue;
+                    if (feeTypeId != null) transaction.FeeTypeId = (int)feeTypeId;
+
+                    var month = cmbMonth.SelectedValue;
+                    if (month != null) transaction.StudyMonth = (int)month;
+
+                    var feeType = _feeTypes.FirstOrDefault(f => f.FeeTypeId == transaction.FeeTypeId);
+                    if (feeType != null) transaction.FeeName = feeType.FeeName;
+                }
+                else if (type == "راتب")
+                {
+                    var employeeId = cmbEmployees.SelectedValue;
+                    if (employeeId != null) transaction.EmployeeId = (int)employeeId;
+
+                    var employee = _employees.FirstOrDefault(emp => emp.EmployeeId == transaction.EmployeeId);
+                    if (employee != null) transaction.EmployeeName = employee.EmployeeName;
+                }
+
+                _financeService.Add(transaction);
+
+                ShowSuccess("✔ تمت إضافة العملية بنجاح");
+                ClearInputs();
+                RefreshTransactions();
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في إضافة العملية: {ex.Message}");
+            }
+        }
+
+        // ===================== EDIT TRANSACTION =====================
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (dgTransactions.SelectedItem is not Transaction selected)
+                {
+                    ShowWarning("اختر عملية لتعديلها");
+                    return;
+                }
+
+                _selectedTransaction = selected;
+                _isEditMode = true;
+
+                FillInputsFromTransaction(selected);
+                ShowInfo("تم تحميل بيانات العملية للتعديل. اضغط 'إضافة' لحفظ التغييرات");
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في تعديل العملية: {ex.Message}");
+            }
+        }
+
+        // ===================== FILL INPUTS FROM TRANSACTION =====================
+        private void FillInputsFromTransaction(Transaction transaction)
+        {
+            cmbType.SelectedItem = transaction.Type;
+            txtAmount.Text = transaction.Amount.ToString("N2");
+            txtTotalRequiredAmount.Text = transaction.TotalRequiredAmount.ToString("N2");
+            txtRemainingAmount.Text = transaction.RemainingAmount.ToString("N2");
+            txtDesc.Text = transaction.Description ?? "";
+            dpTransactionDate.SelectedDate = transaction.Date;
+            cmbPaymentMethod.SelectedItem = transaction.PaymentMethod;
+
+            if (!string.IsNullOrEmpty(transaction.AcademicYear))
+                cmbAcademicYear.SelectedItem = transaction.AcademicYear;
+
+            // ملء مربع بحث الطالب
+            if (transaction.StudentId.HasValue)
+            {
+                var student = _students.FirstOrDefault(s => s.StudentId == transaction.StudentId);
+                if (student != null)
+                {
+                    _selectedStudent = student;
+                    _suppressStudentSearch = true;
+                    txtStudentSearch.Text = student.FullName;
+                    _suppressStudentSearch = false;
+                }
+            }
+            else
+            {
+                _selectedStudent = null;
+                _suppressStudentSearch = true;
+                txtStudentSearch.Clear();
+                _suppressStudentSearch = false;
+            }
+
+            if (transaction.EmployeeId.HasValue)
+                cmbEmployees.SelectedValue = transaction.EmployeeId;
+
+            if (transaction.FeeTypeId.HasValue)
+                cmbFeeType.SelectedValue = transaction.FeeTypeId;
+
+            if (transaction.StudyMonth.HasValue)
+                cmbMonth.SelectedValue = transaction.StudyMonth;
+        }
+
+        // ===================== DELETE TRANSACTION =====================
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (dgTransactions.SelectedItem is not Transaction selected)
+                {
+                    ShowWarning("اختر عملية لحذفها");
+                    return;
+                }
+
+                var result = MessageBox.Show(
+                    $"هل تريد حذف العملية المحددة؟\n\n" +
+                    $"النوع: {selected.Type}\n" +
+                    $"المبلغ: {selected.Amount:N2} ₪\n" +
+                    $"التاريخ: {selected.Date:yyyy-MM-dd}",
+                    "تأكيد الحذف",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    _financeService.Delete(selected.TransactionId);
+                    ShowSuccess("✔ تم حذف العملية بنجاح");
+                    RefreshTransactions();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في حذف العملية: {ex.Message}");
+            }
+        }
+
+        // ===================== FILTER TRANSACTIONS =====================
+        private void Filter_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var filtered = new List<Transaction>(_allTransactions);
+
+                // فلترة حسب التاريخ
+                if (dpFrom.SelectedDate.HasValue)
+                    filtered = filtered.Where(x => x.Date >= dpFrom.SelectedDate.Value).ToList();
+
+                if (dpTo.SelectedDate.HasValue)
+                {
+                    var toDate = dpTo.SelectedDate.Value.AddDays(1).AddTicks(-1);
+                    filtered = filtered.Where(x => x.Date <= toDate).ToList();
+                }
+
+                // فلترة حسب النوع
+                string filterType = cmbFilterType.SelectedItem?.ToString();
+                if (!string.IsNullOrEmpty(filterType) && filterType != "الكل")
+                    filtered = filtered.Where(x => x.Type == filterType).ToList();
+
+                // فلترة حسب نوع الرسوم
+                if (cmbFilterFeeType.SelectedIndex != -1)
+                {
+                    var feeTypeId = cmbFilterFeeType.SelectedValue;
+                    if (feeTypeId != null)
+                        filtered = filtered.Where(x => x.FeeTypeId == (int)feeTypeId).ToList();
+                }
+
+                // فلترة حسب الشهر
+                if (cmbFilterMonth.SelectedIndex != -1)
+                {
+                    var month = cmbFilterMonth.SelectedValue;
+                    if (month != null)
+                        filtered = filtered.Where(x => x.StudyMonth == (int)month).ToList();
+                }
+
+                // فلترة الطلاب الذين لديهم مبلغ متبقي أكبر من صفر
+                if (chkHasRemaining.IsChecked == true)
+                    filtered = filtered.Where(x => x.RemainingAmount > 0).ToList();
+
+                // فلترة نصية عبر جميع الحقول المرئية
+                var searchText = txtSearch?.Text?.Trim();
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    string s = searchText.ToLower();
+                    filtered = filtered.Where(t =>
+                        (!string.IsNullOrEmpty(t.Type) && t.Type.ToLower().Contains(s)) ||
+                        t.Amount.ToString("N2").ToLower().Contains(s) ||
+                        t.TotalRequiredAmount.ToString("N2").ToLower().Contains(s) ||
+                        t.RemainingAmount.ToString("N2").ToLower().Contains(s) ||
+                        (!string.IsNullOrEmpty(t.Description) && t.Description.ToLower().Contains(s)) ||
+                        (!string.IsNullOrEmpty(t.StudentName) && t.StudentName.ToLower().Contains(s)) ||
+                        (!string.IsNullOrEmpty(t.EmployeeName) && t.EmployeeName.ToLower().Contains(s)) ||
+                        (!string.IsNullOrEmpty(t.FeeName) && t.FeeName.ToLower().Contains(s)) ||
+                        (!string.IsNullOrEmpty(t.PaymentMethod) && t.PaymentMethod.ToLower().Contains(s)) ||
+                        t.Date.ToString("yyyy-MM-dd").ToLower().Contains(s)
+                    ).ToList();
+                }
+
+                UpdateDataGrid(filtered);
+                ShowSuccess($"✔ تم العثور على {filtered.Count} عملية");
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في البحث: {ex.Message}");
+            }
+        }
+
+        // ===================== RESET FILTER =====================
+        private void ResetFilter_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dpFrom.SelectedDate = null;
+                dpTo.SelectedDate = null;
+                cmbFilterType.SelectedIndex = 0;
+                cmbFilterFeeType.SelectedIndex = -1;
+                cmbFilterMonth.SelectedIndex = -1;
+                chkHasRemaining.IsChecked = false;
+                if (txtSearch != null) txtSearch.Clear();
+
+                RefreshTransactions();
+                ShowSuccess("✔ تم إعادة تعيين الفلاتر");
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في إعادة التعيين: {ex.Message}");
+            }
+        }
+
+        // ===================== REFRESH BUTTON =====================
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                RefreshTransactions();
+                ShowSuccess("✔ تم تحديث البيانات");
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في التحديث: {ex.Message}");
+            }
+        }
+
+        // ===================== REFRESH DATA FROM DB =====================
+        private void RefreshTransactions()
+        {
+            try
+            {
+                var transactions = _financeService.GetAllTransactions() ?? new List<Transaction>();
+
+                foreach (var trans in transactions)
+                {
+                    if (trans.StudentId.HasValue)
+                    {
+                        var student = _students.FirstOrDefault(s => s.StudentId == trans.StudentId);
+                        trans.StudentName = student?.FullName ?? "غير معروف";
+                    }
+
+                    if (trans.EmployeeId.HasValue)
+                    {
+                        var employee = _employees.FirstOrDefault(emp => emp.EmployeeId == trans.EmployeeId);
+                        trans.EmployeeName = employee?.EmployeeName ?? "غير معروف";
+                    }
+
+                    if (trans.FeeTypeId.HasValue)
+                    {
+                        var feeType = _feeTypes.FirstOrDefault(f => f.FeeTypeId == trans.FeeTypeId);
+                        trans.FeeName = feeType?.FeeName ?? "غير معروف";
+                    }
+                }
+
+                _allTransactions = transactions;
+                UpdateDataGrid(_allTransactions);
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في تحديث البيانات: {ex.Message}");
+            }
+        }
+
+        // ===================== UPDATE DATA GRID =====================
+        private void UpdateDataGrid(List<Transaction> transactions)
+        {
+            dgTransactions.ItemsSource = null;
+            dgTransactions.ItemsSource = transactions;
+            CalculateDashboard(transactions);
+        }
+
+        // ===================== CALCULATE DASHBOARD =====================
+        private void CalculateDashboard(List<Transaction> transactions)
+        {
+            try
+            {
+                decimal income = transactions.Where(x => x.Type == "قبض").Sum(x => x.Amount);
+                decimal expenses = transactions.Where(x => x.Type == "صرف").Sum(x => x.Amount);
+                decimal salaries = transactions.Where(x => x.Type == "راتب").Sum(x => x.Amount);
+                decimal profit = income - expenses - salaries;
+
+                // ✅ إجمالي المتبقي + : مجموع RemainingAmount لعمليات القبض فقط
+                decimal remainingPlus = transactions
+                    .Where(x => x.Type == "قبض")
+                    .Sum(x => x.RemainingAmount);
+
+                // ✅ إجمالي المتبقي - : مجموع RemainingAmount لعمليات الراتب والصرف معاً
+                decimal remainingMinus = transactions
+                    .Where(x => x.Type == "راتب" || x.Type == "صرف")
+                    .Sum(x => x.RemainingAmount);
+
+                txtIncome.Text = $"{income:N2} ₪";
+                txtExpenses.Text = $"{expenses:N2} ₪";
+                txtSalaries.Text = $"{salaries:N2} ₪";
+                txtProfit.Text = $"{profit:N2} ₪";
+                txtTotalRemainingPlus.Text = $"{remainingPlus:N2} ₪";
+                txtTotalRemainingMinus.Text = $"{remainingMinus:N2} ₪";
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في حساب لوحة المعلومات: {ex.Message}");
+            }
+        }
+
+        // ===================== EXPORT TO EXCEL =====================
+        private void Excel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var data = dgTransactions.ItemsSource as List<Transaction>;
+
+                if (data == null || data.Count == 0)
+                {
+                    ShowWarning("لا توجد بيانات للتصدير");
+                    return;
+                }
+
+                SaveFileDialog saveDialog = new SaveFileDialog
+                {
+                    Filter = "ملفات Excel|*.xlsx|جميع الملفات|*.*",
+                    FileName = $"تقرير_مالي_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.xlsx"
+                };
+
+                if (saveDialog.ShowDialog() != true) return;
+
+                using (var workbook = new XLWorkbook())
+                {
+                    var ws = workbook.Worksheets.Add("العمليات المالية");
+
+                    ws.Cell(1, 1).Value = "تقرير النظام المالي المتكامل";
+                    ws.Range(1, 1, 1, 10).Merge();
+
+                    var headerCell = ws.Cell(1, 1);
+                    headerCell.Style.Font.Bold = true;
+                    headerCell.Style.Font.FontSize = 18;
+                    headerCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    headerCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+                    headerCell.Style.Fill.BackgroundColor = XLColor.DarkBlue;
+                    headerCell.Style.Font.FontColor = XLColor.White;
+                    ws.Row(1).Height = 30;
+
+                    ws.Cell(2, 1).Value = $"تاريخ التقرير: {DateTime.Now:yyyy-MM-dd HH:mm:ss}";
+                    ws.Cell(2, 1).Style.Font.Italic = true;
+
+                    string[] headers = new[]
+                    {
+                        "النوع", "المبلغ", "إجمالي المطلوب", "إجمالي المتبقي",
+                        "الوصف", "التاريخ", "الطالب", "الموظف", "نوع الرسوم", "طريقة الدفع"
+                    };
+
+                    for (int i = 0; i < headers.Length; i++)
+                    {
+                        var cell = ws.Cell(4, i + 1);
+                        cell.Value = headers[i];
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Fill.BackgroundColor = XLColor.LightGray;
+                        cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    }
+
+                    int row = 5;
+                    decimal totalAmount = 0;
+
+                    foreach (var item in data)
+                    {
+                        ws.Cell(row, 1).Value = item.Type;
+                        ws.Cell(row, 2).Value = item.Amount;
+                        ws.Cell(row, 3).Value = item.TotalRequiredAmount;
+                        ws.Cell(row, 4).Value = item.RemainingAmount;
+                        ws.Cell(row, 5).Value = item.Description ?? "";
+                        ws.Cell(row, 6).Value = item.Date.ToString("yyyy-MM-dd");
+                        ws.Cell(row, 7).Value = item.StudentName ?? "";
+                        ws.Cell(row, 8).Value = item.EmployeeName ?? "";
+                        ws.Cell(row, 9).Value = item.FeeName ?? "";
+                        ws.Cell(row, 10).Value = item.PaymentMethod ?? "";
+
+                        totalAmount += item.Amount;
+                        row++;
+                    }
+
+                    ws.Cell(row, 1).Value = "الإجمالي";
+                    ws.Cell(row, 1).Style.Font.Bold = true;
+                    ws.Cell(row, 2).Value = totalAmount;
+                    ws.Cell(row, 2).Style.Font.Bold = true;
+                    ws.Cell(row, 2).Style.Fill.BackgroundColor = XLColor.Yellow;
+
+                    ws.Columns().AdjustToContents();
+                    ws.Range(4, 1, row, 10).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                    ws.Range(4, 1, row, 10).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+                    ws.SheetView.FreezeRows(4);
+
+                    workbook.SaveAs(saveDialog.FileName);
+                }
+
+                ShowSuccess($"✔ تم تصدير Excel بنجاح\n{saveDialog.FileName}");
+            }
+            catch (Exception ex)
+            {
+                ShowError($"خطأ في تصدير Excel: {ex.Message}");
+            }
+        }
+
+        // ===================== DATA GRID DOUBLE CLICK =====================
+        private void dgTransactions_MouseDoubleClick(object sender,
+            System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (dgTransactions.SelectedItem is Transaction selected)
+            {
+                _selectedTransaction = selected;
+                _isEditMode = true;
+                FillInputsFromTransaction(selected);
+                ShowInfo("تم تحميل بيانات العملية. يمكنك تعديل البيانات والضغط على 'إضافة' لحفظ");
+            }
+        }
+
+        // ===================== CLEAR INPUTS =====================
+        private void ClearInputs()
+        {
+            txtAmount.Clear();
+            txtDesc.Clear();
+            txtTotalRequiredAmount.Clear();
+            txtRemainingAmount.Clear();
+
+            // مسح مربع بحث الطالب
+            _selectedStudent = null;
+            _suppressStudentSearch = true;
+            if (txtStudentSearch != null) txtStudentSearch.Clear();
+            _suppressStudentSearch = false;
+            if (popupStudents != null) popupStudents.IsOpen = false;
+
+            cmbType.SelectedIndex = 0;
+            cmbEmployees.SelectedIndex = -1;
+            cmbFeeType.SelectedIndex = -1;
+            cmbMonth.SelectedIndex = DateTime.Now.Month - 1;
+            cmbPaymentMethod.SelectedIndex = 0;
+
+            dpTransactionDate.SelectedDate = DateTime.Now;
+
+            _isEditMode = false;
+            _selectedTransaction = null;
+        }
+
+        // ===================== MESSAGE BOX METHODS =====================
+        private void ShowSuccess(string message) =>
+            MessageBox.Show(message, "✔ نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
+
+        private void ShowWarning(string message) =>
+            MessageBox.Show(message, "⚠ تحذير", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        private void ShowError(string message) =>
+            MessageBox.Show(message, "❌ خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        private void ShowInfo(string message) =>
+            MessageBox.Show(message, "ℹ معلومة", MessageBoxButton.OK, MessageBoxImage.Information);
+
+        // ===================== MONTH ITEM CLASS =====================
+        private class MonthItem
+        {
+            public int Value { get; set; }
+            public string Name { get; set; }
+        }
+    }
+}

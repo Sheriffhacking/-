@@ -1,0 +1,45 @@
+﻿<Application x:Class="SchoolManagementSystem.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SchoolManagementSystem"
+             xmlns:conv="clr-namespace:SchoolManagementSystem.Converters">
+    
+
+    <Application.Resources>
+
+        <!-- ===================== GLOBAL STYLES ===================== -->
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="6"/>
+        </Style>
+
+        <!-- ===================== CARD STYLE ===================== -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="#F5F5F5"/>
+            <Setter Property="Margin" Value="6"/>
+        </Style>
+
+        <!-- ===================== CONVERTERS ===================== -->
+
+        <conv:HexToBrushConverter x:Key="HexToBrushConverter"/>
+        <conv:BoolToVisConverter x:Key="BoolToVisConverter"/>
+        <conv:NullToVisConverter x:Key="NullToVisConverter"/>
+
+    </Application.Resources>
+
+</Application>

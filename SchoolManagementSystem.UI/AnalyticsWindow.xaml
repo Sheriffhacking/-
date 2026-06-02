@@ -1,0 +1,224 @@
+﻿<Window x:Class="SchoolManagementSystem.UI.AnalyticsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="لوحة التحليل والإحصائيات"
+        Height="750"
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="#0F172A"
+        FlowDirection="RightToLeft">
+
+    <Grid Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <Border Background="#111827"
+                CornerRadius="20"
+                Padding="18"
+                Margin="0,0,0,15">
+
+            <TextBlock Text="📊 لوحة التحليل والإحصائيات"
+                       Foreground="White"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+
+        </Border>
+
+        <!-- ================= KPI SECTION ================= -->
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- AVG -->
+            <Border Background="#1E293B"
+                    CornerRadius="18"
+                    Margin="10"
+                    Padding="15">
+
+                <StackPanel>
+
+                    <TextBlock Text="المعدل العام"
+                               Foreground="#94A3B8"
+                               FontSize="14"/>
+
+                    <TextBlock x:Name="txtAvg"
+                               Text="0"
+                               Foreground="White"
+                               FontSize="28"
+                               FontWeight="Bold"/>
+
+                </StackPanel>
+
+            </Border>
+
+            <!-- MAX -->
+            <Border Grid.Column="1"
+                    Background="#1E293B"
+                    CornerRadius="18"
+                    Margin="10"
+                    Padding="15">
+
+                <StackPanel>
+
+                    <TextBlock Text="أعلى علامة"
+                               Foreground="#94A3B8"
+                               FontSize="14"/>
+
+                    <TextBlock x:Name="txtMax"
+                               Text="0"
+                               Foreground="#22C55E"
+                               FontSize="28"
+                               FontWeight="Bold"/>
+
+                </StackPanel>
+
+            </Border>
+
+            <!-- MIN -->
+            <Border Grid.Column="2"
+                    Background="#1E293B"
+                    CornerRadius="18"
+                    Margin="10"
+                    Padding="15">
+
+                <StackPanel>
+
+                    <TextBlock Text="أقل علامة"
+                               Foreground="#94A3B8"
+                               FontSize="14"/>
+
+                    <TextBlock x:Name="txtMin"
+                               Text="0"
+                               Foreground="#EF4444"
+                               FontSize="28"
+                               FontWeight="Bold"/>
+
+                </StackPanel>
+
+            </Border>
+
+        </Grid>
+
+        <!-- ================= BUTTONS ================= -->
+        <WrapPanel Grid.Row="2"
+                   HorizontalAlignment="Center"
+                   Margin="0,15,0,15">
+
+            <Button Content="🏆 الطلاب المتفوقين"
+                    Width="180"
+                    Height="45"
+                    Margin="5"
+                    Background="#2563EB"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="TopStudents_Click"/>
+
+            <Button Content="⚠ الطلاب الضعاف"
+                    Width="180"
+                    Height="45"
+                    Margin="5"
+                    Background="#EF4444"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="WeakStudents_Click"/>
+
+            <Button Content="🏫 ترتيب الصفوف"
+                    Width="180"
+                    Height="45"
+                    Margin="5"
+                    Background="#14B8A6"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="ClassRanking_Click"/>
+
+            <Button Content="📘 ترتيب المواد"
+                    Width="180"
+                    Height="45"
+                    Margin="5"
+                    Background="#8B5CF6"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="SubjectRanking_Click"/>
+
+            <Button Content="📊 ملخص المدرسة"
+                    Width="180"
+                    Height="45"
+                    Margin="5"
+                    Background="#F59E0B"
+                    Foreground="Black"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Click="SchoolSummary_Click"/>
+
+        </WrapPanel>
+
+        <!-- ================= DATA GRID ================= -->
+        <Border Grid.Row="3"
+                Background="#0F172A"
+                CornerRadius="18"
+                Padding="10"
+                BorderBrush="#1E293B"
+                BorderThickness="1">
+
+            <DataGrid x:Name="dgAnalytics"
+                      AutoGenerateColumns="True"
+                      Background="#0F172A"
+                      Foreground="#E2E8F0"
+                      BorderThickness="0"
+                      GridLinesVisibility="None"
+                      RowBackground="#1E293B"
+                      AlternatingRowBackground="#111827"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
+                      CanUserResizeColumns="True">
+
+                <!-- ===== HEADER + CELL FIX ===== -->
+                <DataGrid.Resources>
+
+                    <!-- HEADER -->
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#1E293B"/>
+                        <Setter Property="Foreground" Value="#F8FAFC"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="BorderBrush" Value="#334155"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+
+                    <!-- CELL -->
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Foreground" Value="#E2E8F0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Padding" Value="8"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+
+                </DataGrid.Resources>
+
+            </DataGrid>
+
+        </Border>
+
+    </Grid>
+
+</Window>

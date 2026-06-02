@@ -1,0 +1,184 @@
+﻿<Window x:Class="SchoolManagementSystem.UI.EmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="إدارة الموظفين"
+        Height="780"
+        Width="1200"
+        FlowDirection="RightToLeft"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F6F9">
+
+    <Grid Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="264"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+        <Border Grid.Row="0"
+                Background="#FFFFFF"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#E6E9EF"
+                BorderThickness="1">
+
+            <TextBlock Text="👨‍💼 إدارة الموظفين"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Foreground="#2C3E50" TextAlignment="Center"/>
+        </Border>
+
+        <!-- ================= FORM ================= -->
+        <Border Grid.Row="1"
+                Margin="0,12,0,2"
+                Background="White"
+                CornerRadius="12"
+                Padding="20"
+                BorderBrush="#E6E9EF"
+                BorderThickness="1">
+
+            <Grid Margin="0,-40,0,-11">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT -->
+                <StackPanel Margin="10">
+
+                    <TextBlock Text="اسم الموظف"/>
+                    <TextBox x:Name="txtEmployeeName"/>
+
+                    <TextBlock Text="رقم الهوية" Margin="0,10,0,0"/>
+                    <TextBox x:Name="txtNationalId"/>
+
+                    <TextBlock Text="الراتب" Margin="0,10,0,0"/>
+                    <TextBox x:Name="txtSalary"/>
+
+                </StackPanel>
+
+                <!-- RIGHT -->
+                <StackPanel Grid.Column="1" Margin="10">
+
+                    <TextBlock Text="رقم الهاتف"/>
+                    <TextBox x:Name="txtPhone"/>
+
+                    <TextBlock Text="الوظيفة" Margin="0,10,0,0"/>
+                    <TextBox x:Name="txtJobTitle"/>
+
+                    <TextBlock Text="تاريخ التوظيف" Margin="0,10,0,0"/>
+                    <DatePicker x:Name="dpHireDate" Height="34"/>
+
+                    <CheckBox x:Name="chkActive"
+                              Content="موظف نشط"
+                              Margin="0,10,0,0"
+                              IsChecked="True" Height="29"/>
+                </StackPanel>
+
+            </Grid>
+
+        </Border>
+
+        <!-- ================= ACTION BAR ================= -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="10"
+                Padding="10"
+                BorderBrush="#E6E9EF"
+                BorderThickness="1"
+                Margin="0,262,0,297" Grid.RowSpan="3">
+
+            <StackPanel Orientation="Horizontal" Margin="0,-11,0,-1">
+
+                <Button Content="➕ إضافة"
+                        Background="#27AE60"
+                        Width="120"
+                        Margin="5"
+                        Click="Add_Click"/>
+
+                <Button Content="✏ تعديل"
+                        Background="#2980B9"
+                        Width="120"
+                        Margin="5"
+                        Click="Update_Click"/>
+
+                <Button Content="🗑 حذف"
+                        Background="#C0392B"
+                        Width="120"
+                        Margin="5"
+                        Click="Delete_Click"/>
+
+                <Button Content="🔄 جديد"
+                        Background="#F39C12"
+                        Width="120"
+                        Margin="5"
+                        Click="Clear_Click"/>
+
+            </StackPanel>
+
+        </Border>
+
+        <!-- ================= TABLE ================= -->
+        <Border Grid.Row="3"
+                Background="White"
+                CornerRadius="12"
+                Padding="10"
+                BorderBrush="#E6E9EF"
+                BorderThickness="1" Margin="0,202,0,-13">
+
+            <DataGrid x:Name="dgEmployees"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      SelectionChanged="dgEmployees_SelectionChanged"
+                      RowHeight="32"
+                      AlternatingRowBackground="#F7F9FC"
+                      BorderThickness="0" Margin="-11,-103,-11,-1">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="ID"
+                                        Binding="{Binding EmployeeId}"
+                                        Width="60"/>
+
+                    <DataGridTextColumn Header="اسم الموظف"
+                                        Binding="{Binding EmployeeName}"
+                                        Width="*"/>
+
+                    <DataGridTextColumn Header="الهوية"
+                                        Binding="{Binding NationalId}"
+                                        Width="130"/>
+
+                    <DataGridTextColumn Header="الهاتف"
+                                        Binding="{Binding Phone}"
+                                        Width="130"/>
+
+                    <DataGridTextColumn Header="الوظيفة"
+                                        Binding="{Binding JobTitle}"
+                                        Width="150"/>
+
+                    <DataGridTextColumn Header="الراتب"
+                                        Binding="{Binding Salary}"
+                                        Width="100"/>
+
+                    <DataGridTextColumn Header="التوظيف"
+                                        Binding="{Binding HireDate}"
+                                        Width="140"/>
+
+                    <DataGridCheckBoxColumn Header="نشط"
+                                            Binding="{Binding IsActive}"
+                                            Width="70"/>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Border>
+
+    </Grid>
+
+</Window>

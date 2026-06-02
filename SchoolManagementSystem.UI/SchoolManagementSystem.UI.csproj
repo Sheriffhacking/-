@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- ===================== UI PACKAGES ===================== -->
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="EPPlus" Version="8.5.4" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
+  </ItemGroup>
+
+  <!-- ===================== PDF / EXPORT ===================== -->
+  <ItemGroup>
+    <PackageReference Include="QuestPDF" Version="2026.5.0" />
+    <PackageReference Include="PDFsharp" Version="6.2.4" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.6.0" />
+  </ItemGroup>
+
+  <!-- ===================== PROJECT REFERENCES ===================== -->
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolManagementSystem.BLL\SchoolManagementSystem.BLL.csproj" />
+    <ProjectReference Include="..\SchoolManagementSystem.DAL\SchoolManagementSystem.DAL.csproj" />
+    <ProjectReference Include="..\SchoolManagementSystem.Models\SchoolManagementSystem.Models.csproj" />
+  </ItemGroup>
+
+</Project>

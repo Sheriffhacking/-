@@ -1,0 +1,343 @@
+﻿<Window x:Class="SchoolManagementSystem.UI.ClassWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="إدارة الصفوف"
+        Height="720"
+        Width="1200"
+        FlowDirection="RightToLeft"
+        WindowStartupLocation="CenterScreen"
+        Background="#F1F5F9"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <!-- ================= COLORS ================= -->
+
+        <SolidColorBrush x:Key="PrimaryColor" Color="#2563EB"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="CardColor" Color="White"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#DCE3EA"/>
+
+        <!-- ================= BUTTON STYLE ================= -->
+
+        <Style TargetType="Button">
+
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Width" Value="130"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+
+                    <ControlTemplate TargetType="Button">
+
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10">
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+
+                        </Border>
+
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <!-- ================= TEXTBOX STYLE ================= -->
+
+        <Style TargetType="TextBox">
+
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Margin" Value="0,6,0,0"/>
+
+        </Style>
+
+        <!-- ================= DATAGRID STYLE ================= -->
+
+        <Style TargetType="DataGrid">
+
+            <Setter Property="RowHeight" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="18">
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="210"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="280"/>
+
+        </Grid.RowDefinitions>
+
+        <!-- ================= HEADER ================= -->
+
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="16"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="1">
+
+            <Grid Margin="20,0">
+
+                <TextBlock Text="📚 إدارة الصفوف الدراسية"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           Foreground="#1E293B" TextAlignment="Center"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- ================= FORM ================= -->
+
+        <Border Grid.Row="1"
+                Margin="0,15,0,5"
+                Background="White"
+                CornerRadius="16"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="1">
+
+            <Grid Margin="20">
+
+                <Grid.ColumnDefinitions>
+
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1.3*"/>
+
+                </Grid.ColumnDefinitions>
+
+                <!-- ================= RIGHT SIDE ================= -->
+
+                <Grid Grid.Column="0">
+
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="اسم الصف"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               Foreground="#334155"/>
+
+                    <TextBox x:Name="txtClassName"
+                             Width="350"
+                             HorizontalAlignment="Right" Margin="0,0,208,26" Grid.RowSpan="2"/>
+
+                    <TextBlock Text="مربي الصف"
+                               Grid.Row="2"
+                               Margin="0,14,0,0"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               Foreground="#334155"/>
+
+                    <TextBox x:Name="txtTeacherName"
+                             Grid.Row="2"
+                             Width="350"
+                             VerticalAlignment="Top"
+                             HorizontalAlignment="Right" Margin="0,3,208,0" Grid.RowSpan="2"/>
+
+                </Grid>
+
+                <!-- ================= LEFT SIDE ================= -->
+
+                <Grid Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition Height="90"/>
+                        <RowDefinition Height="*"/>
+
+                    </Grid.RowDefinitions>
+
+                    <!-- CARD -->
+
+                    <Border Background="#ECFDF5"
+                            CornerRadius="14"
+                            Padding="15"
+                            Margin="0,0,0,5">
+
+                        <StackPanel>
+
+                            <TextBlock Text="عدد الطلاب"
+                                       FontSize="15"
+                                       Foreground="#64748B" TextAlignment="Center" Height="23"/>
+                            <TextBlock x:Name="txtCount"
+                                       Text="0"
+                                       FontSize="30"
+                                       FontWeight="Bold"
+                                       Foreground="#059669" TextAlignment="Center" Height="42"/>
+
+                        </StackPanel>
+
+                    </Border>
+
+                    <!-- BUTTONS -->
+
+                    <WrapPanel Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Top">
+
+                        <Button Content="➕ حفظ"
+                                Background="{StaticResource SuccessColor}"
+                                Click="Save_Click"/>
+
+                        <Button Content="✏ تعديل"
+                                Background="{StaticResource PrimaryColor}"
+                                Click="Update_Click"/>
+
+                        <Button Content="🗑 حذف"
+                                Background="{StaticResource DangerColor}"
+                                Click="Delete_Click"/>
+
+                    </WrapPanel>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+        <!-- ================= CLASSES TABLE ================= -->
+
+        <Border Grid.Row="2"
+                Background="White"
+                CornerRadius="16"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="1"
+                Padding="15" Margin="0,0,0,82" Grid.RowSpan="2">
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="140.04"/>
+                    <RowDefinition Height="0*"/>
+
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="الصفوف الدراسية"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="#1E293B"
+                           VerticalAlignment="Top" Margin="0,-4,0,0" Height="27"/>
+
+                <DataGrid x:Name="dgClasses"
+                          Margin="0,-32,0,-148"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          SelectionChanged="dgClasses_SelectionChanged" Grid.RowSpan="2">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="رقم الصف"
+                                            Binding="{Binding ClassId}"
+                                            Width="120"/>
+
+                        <DataGridTextColumn Header="اسم الصف"
+                                            Binding="{Binding ClassName}"
+                                            Width="*"/>
+
+                        <DataGridTextColumn Header="مربي الصف"
+                                            Binding="{Binding ClassTeacherName}"
+                                            Width="250"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </Grid>
+
+        </Border>
+
+        <!-- ================= STUDENTS TABLE ================= -->
+
+        <Border Grid.Row="3"
+                Margin="0,203,0,-156"
+                Background="White"
+                CornerRadius="16"
+                BorderBrush="{StaticResource BorderColor}"
+                BorderThickness="1"
+                Padding="15">
+
+            <Grid Margin="0,63,0,0">
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="طلاب الصف المحدد"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="#1E293B"
+                           VerticalAlignment="Top" Margin="0,-67,0,0"/>
+
+                <DataGrid x:Name="dgStudentsInClass"
+                          Margin="0,-35,0,0"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True" Grid.RowSpan="2">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="ID"
+                                            Binding="{Binding StudentId}"
+                                            Width="70"/>
+
+                        <DataGridTextColumn Header="اسم الطالب"
+                                            Binding="{Binding FullName}"
+                                            Width="220"/>
+
+                        <DataGridTextColumn Header="رقم الهوية"
+                                            Binding="{Binding NationalId}"
+                                            Width="180"/>
+
+                        <DataGridTextColumn Header="الهاتف"
+                                            Binding="{Binding Phone}"
+                                            Width="170"/>
+
+                        <DataGridTextColumn Header="المعدل"
+                                            Binding="{Binding PreviousGPA}"
+                                            Width="120"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</Window>

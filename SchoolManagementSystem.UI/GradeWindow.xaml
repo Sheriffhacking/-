@@ -1,0 +1,386 @@
+﻿<Window x:Class="SchoolManagementSystem.UI.GradeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="إدارة الدرجات والتقييم"
+        Height="820" Width="1320"
+        MinHeight="700" MinWidth="1100"
+        FlowDirection="RightToLeft"
+        WindowStartupLocation="CenterScreen"
+        Background="#F0F2F5">
+
+    <Window.Resources>
+
+        <Style x:Key="ActionBtn" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.82"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.65"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="bd" Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#6B7280"/>
+            <Setter Property="Margin" Value="2,0,0,5"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Border Grid.Row="0"
+                Background="#1E3A5F"
+                CornerRadius="12"
+                Padding="22,14">
+            <Grid>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="🎓" FontSize="26"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                </StackPanel>
+                <TextBlock x:Name="txtCurrentDate"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="13"
+                           Foreground="#93B8D8"/>
+                <TextBlock Text="إدارة الدرجات والتقييم"
+                               FontSize="22" FontWeight="Bold"
+                               Foreground="White"
+                               TextAlignment="Center" Margin="506,-1,506,1"/>
+            </Grid>
+        </Border>
+
+        <!-- FILTERS -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Padding="20,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="الصف الدراسي" Style="{StaticResource FieldLabel}"/>
+                    <ComboBox x:Name="cmbClass"
+                              DisplayMemberPath="ClassName"
+                              SelectedValuePath="ClassId"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="المادة الدراسية" Style="{StaticResource FieldLabel}"/>
+                    <ComboBox x:Name="cmbSubject"
+                              DisplayMemberPath="SubjectName"
+                              SelectedValuePath="SubjectId"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4">
+                    <TextBlock Text="نوع الاختبار" Style="{StaticResource FieldLabel}"/>
+                    <ComboBox x:Name="cmbExamType">
+                        <ComboBoxItem Content="امتحان شهري"/>
+                        <ComboBoxItem Content="نصف فصل"/>
+                        <ComboBoxItem Content="نهائي"/>
+                        <ComboBoxItem Content="واجب"/>
+                        <ComboBoxItem Content="نشاط"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="6">
+                    <TextBlock Text="الفصل الدراسي" Style="{StaticResource FieldLabel}"/>
+                    <ComboBox x:Name="cmbSemester">
+                        <ComboBoxItem Content="الفصل الأول"/>
+                        <ComboBoxItem Content="الفصل الثاني"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="8">
+                    <TextBlock Text="تاريخ الاختبار" Style="{StaticResource FieldLabel}"/>
+                    <DatePicker x:Name="dpDate"
+                                Height="38" FontSize="14"
+                                VerticalContentAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ACTIONS -->
+        <Border Grid.Row="4" Style="{StaticResource Card}" Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBox x:Name="txtSearch" Width="230"/>
+                    <Button Content="🔍  بحث عن طالب"
+                            Style="{StaticResource ActionBtn}"
+                            Background="#8E44AD"
+                            Width="145"
+                            Margin="8,0,0,0"
+                            Click="Search_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Content="📥  تحميل الطلاب"
+                            Style="{StaticResource ActionBtn}"
+                            Background="#2980B9"
+                            Width="145"
+                            Margin="0,0,8,0"
+                            Click="LoadStudents_Click"/>
+                    <Button Content="💾  حفظ الدرجات"
+                            Style="{StaticResource ActionBtn}"
+                            Background="#27AE60"
+                            Width="145"
+                            Margin="0,0,8,0"
+                            Click="SaveGrades_Click"/>
+                    <Button Content="📊  نتائج الصف"
+                            Style="{StaticResource ActionBtn}"
+                            Background="#2C3E50"
+                            Width="135"
+                            Margin="0,0,8,0"
+                            Click="ClassResults_Click"/>
+                    <Button Content="🗑  حذف درجة"
+                            Style="{StaticResource ActionBtn}"
+                            Background="#C0392B"
+                            Width="125"
+                            Margin="0,0,8,0"
+                            Click="DeleteGrade_Click"/>
+                    <Button Content="🔄  تفريغ الحقول"
+                            Style="{StaticResource ActionBtn}"
+                            Background="#7F8C8D"
+                            Width="140"
+                            Click="ClearFields_Click"/>
+                    <Button Content="📤  تصدير Excel"
+        Style="{StaticResource ActionBtn}"
+        Background="#16A085"
+        Width="140"
+        Margin="8,0,0,0"
+        Click="ExportToExcel_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- DASHBOARD -->
+        <Grid Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#1ABC9C"
+                    CornerRadius="12" Padding="18,12">
+                <StackPanel>
+                    <TextBlock Text="👥  عدد الطلاب"
+                               FontSize="13" Foreground="#D0F5EE"/>
+                    <TextBlock x:Name="txtStudentsCount" Text="—"
+                               FontSize="32" FontWeight="Bold"
+                               Foreground="White" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Background="#E67E22"
+                    CornerRadius="12" Padding="18,12">
+                <StackPanel>
+                    <TextBlock Text="📈  المعدل العام"
+                               FontSize="13" Foreground="#FDDCB5"/>
+                    <TextBlock x:Name="txtAverage" Text="—"
+                               FontSize="32" FontWeight="Bold"
+                               Foreground="White" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="4" Background="#9B59B6"
+                    CornerRadius="12" Padding="18,12">
+                <StackPanel>
+                    <TextBlock Text="🏆  أعلى درجة"
+                               FontSize="13" Foreground="#E4C9F7"/>
+                    <TextBlock x:Name="txtHighest" Text="—"
+                               FontSize="32" FontWeight="Bold"
+                               Foreground="White" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="6" Background="#2980B9"
+                    CornerRadius="12" Padding="18,12">
+                <StackPanel>
+                    <TextBlock Text="✅  نسبة النجاح"
+                               FontSize="13" Foreground="#C2DDF5"/>
+                    <TextBlock x:Name="txtPassRate" Text="—"
+                               FontSize="32" FontWeight="Bold"
+                               Foreground="White" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- DATAGRID -->
+        <Border Grid.Row="8" Style="{StaticResource Card}" Padding="12">
+            <DataGrid x:Name="dgGrades"
+                      AutoGenerateColumns="False"
+                      FontSize="14" RowHeight="38"
+                      HeadersVisibility="Column"
+                      CanUserAddRows="False"
+                      SelectionMode="Single"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="0"
+                      RowBackground="White"
+                      AlternatingRowBackground="#F8FAFB"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#1E3A5F"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="13"/>
+                        <Setter Property="Padding" Value="12,9"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                        <Setter Property="BorderBrush" Value="#2C4E78"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#DBEAFE"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#EFF6FF"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="10,4"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#1E3A5F"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="اسم الطالب"
+                                        Binding="{Binding StudentName}"
+                                        Width="200" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="الصف"
+                                        Binding="{Binding ClassName}"
+                                        Width="110" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="المادة"
+                                        Binding="{Binding SubjectName}"
+                                        Width="130" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="نوع الاختبار"
+                                        Binding="{Binding ExamType}"
+                                        Width="120" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="الفصل"
+                                        Binding="{Binding Semester}"
+                                        Width="110" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="الدرجة"
+                                        Binding="{Binding Score}"
+                                        Width="90"/>
+                    <DataGridTextColumn Header="التقدير"
+                                        Binding="{Binding Evaluation}"
+                                        Width="100" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="التاريخ"
+                                        Binding="{Binding GradeDate, StringFormat=\{0:dd/MM/yyyy\}}"
+                                        Width="110" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="ملاحظات"
+                                        Binding="{Binding Notes}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+    </Grid>
+</Window>

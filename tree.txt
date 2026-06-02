@@ -1,0 +1,554 @@
+Folder PATH listing
+Volume serial number is 2EA8-4BC3
+C:.
+³   PasswordHelper.cs
+³   SchoolDB.mdf
+³   SchoolDB_log.ldf
+³   SchoolManagementSystem.slnx
+³   SecurityHelper.cs
+³   
+ÃÄÄÄSchoolManagementSystem.BLL
+³   ³   AnalyticsService.cs
+³   ³   AttendanceService.cs
+³   ³   AuthService.cs
+³   ³   Class1.cs
+³   ³   ClassService.cs
+³   ³   EmployeeService.cs
+³   ³   ExportService.cs
+³   ³   FeeTypeService.cs
+³   ³   FinanceService.cs
+³   ³   GradeService.cs
+³   ³   GradeService.Delete
+³   ³   SchoolManagementSystem.BLL.csproj
+³   ³   SchoolSummaryDto.cs
+³   ³   StudentService.cs
+³   ³   SubjectService.cs
+³   ³   
+³   ÃÄÄÄbin
+³   ³   ÀÄÄÄDebug
+³   ³       ÀÄÄÄnet10.0
+³   ³           ³   SchoolManagementSystem.BLL.deps.json
+³   ³           ³   SchoolManagementSystem.BLL.dll
+³   ³           ³   SchoolManagementSystem.BLL.pdb
+³   ³           ³   SchoolManagementSystem.DAL.dll
+³   ³           ³   SchoolManagementSystem.DAL.pdb
+³   ³           ³   SchoolManagementSystem.Models.dll
+³   ³           ³   SchoolManagementSystem.Models.pdb
+³   ³           ³   
+³   ³           ÀÄÄÄLatoFont
+³   ³                   Lato-Black.ttf
+³   ³                   Lato-BlackItalic.ttf
+³   ³                   Lato-Bold.ttf
+³   ³                   Lato-BoldItalic.ttf
+³   ³                   Lato-ExtraBold.ttf
+³   ³                   Lato-ExtraBoldItalic.ttf
+³   ³                   Lato-ExtraLight.ttf
+³   ³                   Lato-ExtraLightItalic.ttf
+³   ³                   Lato-Italic.ttf
+³   ³                   Lato-Light.ttf
+³   ³                   Lato-LightItalic.ttf
+³   ³                   Lato-Medium.ttf
+³   ³                   Lato-MediumItalic.ttf
+³   ³                   Lato-Regular.ttf
+³   ³                   Lato-SemiBold.ttf
+³   ³                   Lato-SemiBoldItalic.ttf
+³   ³                   Lato-Thin.ttf
+³   ³                   Lato-ThinItalic.ttf
+³   ³                   OFL.txt
+³   ³                   
+³   ÀÄÄÄobj
+³       ³   project.assets.json
+³       ³   project.nuget.cache
+³       ³   SchoolManagementSystem.BLL.csproj.nuget.dgspec.json
+³       ³   SchoolManagementSystem.BLL.csproj.nuget.g.props
+³       ³   SchoolManagementSystem.BLL.csproj.nuget.g.targets
+³       ³   
+³       ÀÄÄÄDebug
+³           ÀÄÄÄnet10.0
+³               ³   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+³               ³   SchoolMa.40E0519C.Up2Date
+³               ³   SchoolManagementSystem.BLL.AssemblyInfo.cs
+³               ³   SchoolManagementSystem.BLL.AssemblyInfoInputs.cache
+³               ³   SchoolManagementSystem.BLL.assets.cache
+³               ³   SchoolManagementSystem.BLL.csproj.AssemblyReference.cache
+³               ³   SchoolManagementSystem.BLL.csproj.CoreCompileInputs.cache
+³               ³   SchoolManagementSystem.BLL.csproj.FileListAbsolute.txt
+³               ³   SchoolManagementSystem.BLL.dll
+³               ³   SchoolManagementSystem.BLL.GeneratedMSBuildEditorConfig.editorconfig
+³               ³   SchoolManagementSystem.BLL.GlobalUsings.g.cs
+³               ³   SchoolManagementSystem.BLL.pdb
+³               ³   
+³               ÃÄÄÄref
+³               ³       SchoolManagementSystem.BLL.dll
+³               ³       
+³               ÀÄÄÄrefint
+³                       SchoolManagementSystem.BLL.dll
+³                       
+ÃÄÄÄSchoolManagementSystem.DAL
+³   ³   AnalyticsRepository.cs
+³   ³   AttendanceRepository.cs
+³   ³   ClassRepository.cs
+³   ³   DatabaseConnection.cs
+³   ³   EmployeeRepository.cs
+³   ³   FeeTypeRepository.cs
+³   ³   GradeRepository.cs
+³   ³   SchoolManagementSystem.DAL.csproj
+³   ³   StudentRepository.cs
+³   ³   SubjectRepository.cs
+³   ³   TimetableRepository.cs
+³   ³   TransactionRepository.cs
+³   ³   UserRepository.cs
+³   ³   
+³   ÃÄÄÄbin
+³   ³   ÀÄÄÄDebug
+³   ³       ÀÄÄÄnet10.0
+³   ³           ³   SchoolManagementSystem.DAL.deps.json
+³   ³           ³   SchoolManagementSystem.DAL.dll
+³   ³           ³   SchoolManagementSystem.DAL.pdb
+³   ³           ³   SchoolManagementSystem.Models.dll
+³   ³           ³   SchoolManagementSystem.Models.pdb
+³   ³           ³   
+³   ³           ÀÄÄÄLatoFont
+³   ³                   Lato-Black.ttf
+³   ³                   Lato-BlackItalic.ttf
+³   ³                   Lato-Bold.ttf
+³   ³                   Lato-BoldItalic.ttf
+³   ³                   Lato-ExtraBold.ttf
+³   ³                   Lato-ExtraBoldItalic.ttf
+³   ³                   Lato-ExtraLight.ttf
+³   ³                   Lato-ExtraLightItalic.ttf
+³   ³                   Lato-Italic.ttf
+³   ³                   Lato-Light.ttf
+³   ³                   Lato-LightItalic.ttf
+³   ³                   Lato-Medium.ttf
+³   ³                   Lato-MediumItalic.ttf
+³   ³                   Lato-Regular.ttf
+³   ³                   Lato-SemiBold.ttf
+³   ³                   Lato-SemiBoldItalic.ttf
+³   ³                   Lato-Thin.ttf
+³   ³                   Lato-ThinItalic.ttf
+³   ³                   OFL.txt
+³   ³                   
+³   ÃÄÄÄHelpers
+³   ³       DatabaseHelper.cs
+³   ³       
+³   ÀÄÄÄobj
+³       ³   project.assets.json
+³       ³   project.nuget.cache
+³       ³   SchoolManagementSystem.DAL.csproj.nuget.dgspec.json
+³       ³   SchoolManagementSystem.DAL.csproj.nuget.g.props
+³       ³   SchoolManagementSystem.DAL.csproj.nuget.g.targets
+³       ³   
+³       ÀÄÄÄDebug
+³           ÀÄÄÄnet10.0
+³               ³   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+³               ³   SchoolMa.F8A2665D.Up2Date
+³               ³   SchoolManagementSystem.DAL.AssemblyInfo.cs
+³               ³   SchoolManagementSystem.DAL.AssemblyInfoInputs.cache
+³               ³   SchoolManagementSystem.DAL.assets.cache
+³               ³   SchoolManagementSystem.DAL.csproj.AssemblyReference.cache
+³               ³   SchoolManagementSystem.DAL.csproj.CoreCompileInputs.cache
+³               ³   SchoolManagementSystem.DAL.csproj.FileListAbsolute.txt
+³               ³   SchoolManagementSystem.DAL.dll
+³               ³   SchoolManagementSystem.DAL.GeneratedMSBuildEditorConfig.editorconfig
+³               ³   SchoolManagementSystem.DAL.GlobalUsings.g.cs
+³               ³   SchoolManagementSystem.DAL.pdb
+³               ³   
+³               ÃÄÄÄref
+³               ³       SchoolManagementSystem.DAL.dll
+³               ³       
+³               ÀÄÄÄrefint
+³                       SchoolManagementSystem.DAL.dll
+³                       
+ÃÄÄÄSchoolManagementSystem.Data
+³       SchoolManagementSystem.Data.dbmdl
+³       SchoolManagementSystem.Data.sqlproj
+³       SchoolManagementSystem.Data.sqlproj.user
+³       
+ÃÄÄÄSchoolManagementSystem.Models
+³   ³   Attendance.cs
+³   ³   ClassTimetableEntry.cs
+³   ³   Dto.cs
+³   ³   Employee.cs
+³   ³   FeeType.cs
+³   ³   Grade.cs
+³   ³   Models.cs
+³   ³   SchoolManagementSystem.Models.csproj
+³   ³   StudentAttachment.cs
+³   ³   StudentFeeReport.cs
+³   ³   StudentFinanceERP.cs
+³   ³   StudentStatement.cs
+³   ³   Subject.cs
+³   ³   Transaction.cs
+³   ³   TransactionType.cs
+³   ³   
+³   ÃÄÄÄbin
+³   ³   ÀÄÄÄDebug
+³   ³       ÀÄÄÄnet10.0
+³   ³           ³   SchoolManagementSystem.Models.deps.json
+³   ³           ³   SchoolManagementSystem.Models.dll
+³   ³           ³   SchoolManagementSystem.Models.pdb
+³   ³           ³   
+³   ³           ÀÄÄÄLatoFont
+³   ³                   Lato-Black.ttf
+³   ³                   Lato-BlackItalic.ttf
+³   ³                   Lato-Bold.ttf
+³   ³                   Lato-BoldItalic.ttf
+³   ³                   Lato-ExtraBold.ttf
+³   ³                   Lato-ExtraBoldItalic.ttf
+³   ³                   Lato-ExtraLight.ttf
+³   ³                   Lato-ExtraLightItalic.ttf
+³   ³                   Lato-Italic.ttf
+³   ³                   Lato-Light.ttf
+³   ³                   Lato-LightItalic.ttf
+³   ³                   Lato-Medium.ttf
+³   ³                   Lato-MediumItalic.ttf
+³   ³                   Lato-Regular.ttf
+³   ³                   Lato-SemiBold.ttf
+³   ³                   Lato-SemiBoldItalic.ttf
+³   ³                   Lato-Thin.ttf
+³   ³                   Lato-ThinItalic.ttf
+³   ³                   OFL.txt
+³   ³                   
+³   ÃÄÄÄModels
+³   ³       Class.cs
+³   ³       Employee.cs
+³   ³       Students.cs
+³   ³       User.cs
+³   ³       
+³   ÃÄÄÄobj
+³   ³   ³   project.assets.json
+³   ³   ³   project.nuget.cache
+³   ³   ³   SchoolManagementSystem.Models.csproj.nuget.dgspec.json
+³   ³   ³   SchoolManagementSystem.Models.csproj.nuget.g.props
+³   ³   ³   SchoolManagementSystem.Models.csproj.nuget.g.targets
+³   ³   ³   
+³   ³   ÀÄÄÄDebug
+³   ³       ÀÄÄÄnet10.0
+³   ³           ³   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+³   ³           ³   SchoolManagementSystem.Models.AssemblyInfo.cs
+³   ³           ³   SchoolManagementSystem.Models.AssemblyInfoInputs.cache
+³   ³           ³   SchoolManagementSystem.Models.assets.cache
+³   ³           ³   SchoolManagementSystem.Models.csproj.AssemblyReference.cache
+³   ³           ³   SchoolManagementSystem.Models.csproj.CoreCompileInputs.cache
+³   ³           ³   SchoolManagementSystem.Models.csproj.FileListAbsolute.txt
+³   ³           ³   SchoolManagementSystem.Models.dll
+³   ³           ³   SchoolManagementSystem.Models.GeneratedMSBuildEditorConfig.editorconfig
+³   ³           ³   SchoolManagementSystem.Models.GlobalUsings.g.cs
+³   ³           ³   SchoolManagementSystem.Models.pdb
+³   ³           ³   
+³   ³           ÃÄÄÄref
+³   ³           ³       SchoolManagementSystem.Models.dll
+³   ³           ³       
+³   ³           ÀÄÄÄrefint
+³   ³                   SchoolManagementSystem.Models.dll
+³   ³                   
+³   ÀÄÄÄSecurity
+³           PasswordHelper.cs
+³           
+ÀÄÄÄSchoolManagementSystem.UI
+    ³   AnalyticsWindow.xaml
+    ³   AnalyticsWindow.xaml.cs
+    ³   App.config
+    ³   App.xaml
+    ³   App.xaml.cs
+    ³   AssemblyInfo.cs
+    ³   AttendanceWindow.xaml
+    ³   AttendanceWindow.xaml.cs
+    ³   ClassWindow.xaml
+    ³   ClassWindow.xaml.cs
+    ³   DatabaseHelper.cs
+    ³   EmployeeWindow.xaml
+    ³   EmployeeWindow.xaml.cs
+    ³   FinanceWindow.xaml
+    ³   FinanceWindow.xaml.cs
+    ³   GradeWindow.xaml
+    ³   GradeWindow.xaml.cs
+    ³   LoginWindow.xaml
+    ³   LoginWindow.xaml.cs
+    ³   MainDashboard.xaml
+    ³   MainDashboard.xaml.cs
+    ³   SchoolManagementSystem.UI.csproj
+    ³   SchoolManagementSystem.UI.csproj.user
+    ³   StudentsWindow.xaml
+    ³   StudentsWindow.xaml.cs
+    ³   
+    ÃÄÄÄbin
+    ³   ÀÄÄÄDebug
+    ³       ÀÄÄÄnet10.0-windows
+    ³           ³   BouncyCastle.Cryptography.dll
+    ³           ³   ClosedXML.dll
+    ³           ³   ClosedXML.Parser.dll
+    ³           ³   DocumentFormat.OpenXml.dll
+    ³           ³   DocumentFormat.OpenXml.Framework.dll
+    ³           ³   EPPlus.dll
+    ³           ³   EPPlus.Interfaces.dll
+    ³           ³   ExcelNumberFormat.dll
+    ³           ³   itext.bouncy-castle-adapter.dll
+    ³           ³   itext.commons.dll
+    ³           ³   Microsoft.Bcl.Cryptography.dll
+    ³           ³   Microsoft.Data.SqlClient.dll
+    ³           ³   Microsoft.Data.SqlClient.Extensions.Abstractions.dll
+    ³           ³   Microsoft.Data.SqlClient.Internal.Logging.dll
+    ³           ³   Microsoft.Extensions.Caching.Abstractions.dll
+    ³           ³   Microsoft.Extensions.Caching.Memory.dll
+    ³           ³   Microsoft.Extensions.Configuration.Abstractions.dll
+    ³           ³   Microsoft.Extensions.Configuration.dll
+    ³           ³   Microsoft.Extensions.Configuration.FileExtensions.dll
+    ³           ³   Microsoft.Extensions.Configuration.Json.dll
+    ³           ³   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+    ³           ³   Microsoft.Extensions.DependencyInjection.dll
+    ³           ³   Microsoft.Extensions.FileProviders.Abstractions.dll
+    ³           ³   Microsoft.Extensions.FileProviders.Physical.dll
+    ³           ³   Microsoft.Extensions.FileSystemGlobbing.dll
+    ³           ³   Microsoft.Extensions.Logging.Abstractions.dll
+    ³           ³   Microsoft.Extensions.Logging.dll
+    ³           ³   Microsoft.Extensions.Options.dll
+    ³           ³   Microsoft.Extensions.Primitives.dll
+    ³           ³   Microsoft.IdentityModel.Abstractions.dll
+    ³           ³   Microsoft.IdentityModel.JsonWebTokens.dll
+    ³           ³   Microsoft.IdentityModel.Logging.dll
+    ³           ³   Microsoft.IdentityModel.Protocols.dll
+    ³           ³   Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+    ³           ³   Microsoft.IdentityModel.Tokens.dll
+    ³           ³   Microsoft.IO.RecyclableMemoryStream.dll
+    ³           ³   Microsoft.SqlServer.Server.dll
+    ³           ³   PdfSharp.BarCodes.dll
+    ³           ³   PdfSharp.Charting.dll
+    ³           ³   PdfSharp.Cryptography.dll
+    ³           ³   PdfSharp.dll
+    ³           ³   PdfSharp.Quality.dll
+    ³           ³   PdfSharp.Shared.dll
+    ³           ³   PdfSharp.Snippets.dll
+    ³           ³   PdfSharp.System.dll
+    ³           ³   PdfSharp.WPFonts.dll
+    ³           ³   QuestPDF.dll
+    ³           ³   RBush.dll
+    ³           ³   SchoolManagementSystem.BLL.dll
+    ³           ³   SchoolManagementSystem.BLL.pdb
+    ³           ³   SchoolManagementSystem.DAL.dll
+    ³           ³   SchoolManagementSystem.DAL.pdb
+    ³           ³   SchoolManagementSystem.Models.dll
+    ³           ³   SchoolManagementSystem.Models.pdb
+    ³           ³   SchoolManagementSystem.UI.deps.json
+    ³           ³   SchoolManagementSystem.UI.dll
+    ³           ³   SchoolManagementSystem.UI.dll.config
+    ³           ³   SchoolManagementSystem.UI.exe
+    ³           ³   SchoolManagementSystem.UI.pdb
+    ³           ³   SchoolManagementSystem.UI.runtimeconfig.json
+    ³           ³   SixLabors.Fonts.dll
+    ³           ³   System.IdentityModel.Tokens.Jwt.dll
+    ³           ³   
+    ³           ÃÄÄÄcs
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄde
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄes
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄfr
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄit
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄja
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄko
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄLatoFont
+    ³           ³       Lato-Black.ttf
+    ³           ³       Lato-BlackItalic.ttf
+    ³           ³       Lato-Bold.ttf
+    ³           ³       Lato-BoldItalic.ttf
+    ³           ³       Lato-ExtraBold.ttf
+    ³           ³       Lato-ExtraBoldItalic.ttf
+    ³           ³       Lato-ExtraLight.ttf
+    ³           ³       Lato-ExtraLightItalic.ttf
+    ³           ³       Lato-Italic.ttf
+    ³           ³       Lato-Light.ttf
+    ³           ³       Lato-LightItalic.ttf
+    ³           ³       Lato-Medium.ttf
+    ³           ³       Lato-MediumItalic.ttf
+    ³           ³       Lato-Regular.ttf
+    ³           ³       Lato-SemiBold.ttf
+    ³           ³       Lato-SemiBoldItalic.ttf
+    ³           ³       Lato-Thin.ttf
+    ³           ³       Lato-ThinItalic.ttf
+    ³           ³       OFL.txt
+    ³           ³       
+    ³           ÃÄÄÄpl
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄpt-BR
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄru
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄruntimes
+    ³           ³   ÃÄÄÄlinux-arm64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           libqpdf.so
+    ³           ³   ³           libQuestPdfSkia.so
+    ³           ³   ³           
+    ³           ³   ÃÄÄÄlinux-musl-x64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           libqpdf.so
+    ³           ³   ³           libQuestPdfSkia.so
+    ³           ³   ³           
+    ³           ³   ÃÄÄÄlinux-x64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           libqpdf.so
+    ³           ³   ³           libQuestPdfSkia.so
+    ³           ³   ³           
+    ³           ³   ÃÄÄÄosx-arm64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           libqpdf.dylib
+    ³           ³   ³           libQuestPdfSkia.dylib
+    ³           ³   ³           
+    ³           ³   ÃÄÄÄosx-x64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           libqpdf.dylib
+    ³           ³   ³           libQuestPdfSkia.dylib
+    ³           ³   ³           
+    ³           ³   ÃÄÄÄunix
+    ³           ³   ³   ÀÄÄÄlib
+    ³           ³   ³       ÀÄÄÄnet9.0
+    ³           ³   ³               Microsoft.Data.SqlClient.dll
+    ³           ³   ³               
+    ³           ³   ÃÄÄÄwin
+    ³           ³   ³   ÀÄÄÄlib
+    ³           ³   ³       ÀÄÄÄnet9.0
+    ³           ³   ³               Microsoft.Data.SqlClient.dll
+    ³           ³   ³               
+    ³           ³   ÃÄÄÄwin-arm64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           Microsoft.Data.SqlClient.SNI.dll
+    ³           ³   ³           
+    ³           ³   ÃÄÄÄwin-x64
+    ³           ³   ³   ÀÄÄÄnative
+    ³           ³   ³           libgcc_s_seh-1.dll
+    ³           ³   ³           libstdc++-6.dll
+    ³           ³   ³           libwinpthread-1.dll
+    ³           ³   ³           Microsoft.Data.SqlClient.SNI.dll
+    ³           ³   ³           qpdf.dll
+    ³           ³   ³           QuestPdfSkia.dll
+    ³           ³   ³           zlib1.dll
+    ³           ³   ³           
+    ³           ³   ÀÄÄÄwin-x86
+    ³           ³       ÀÄÄÄnative
+    ³           ³               libgcc_s_dw2-1.dll
+    ³           ³               libstdc++-6.dll
+    ³           ³               libwinpthread-1.dll
+    ³           ³               Microsoft.Data.SqlClient.SNI.dll
+    ³           ³               qpdf.dll
+    ³           ³               QuestPdfSkia.dll
+    ³           ³               zlib1.dll
+    ³           ³               
+    ³           ÃÄÄÄtr
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÃÄÄÄzh-Hans
+    ³           ³       Microsoft.Data.SqlClient.resources.dll
+    ³           ³       
+    ³           ÀÄÄÄzh-Hant
+    ³                   Microsoft.Data.SqlClient.resources.dll
+    ³                   
+    ÃÄÄÄHelpes
+    ³       Converters.cs
+    ³       
+    ÃÄÄÄobj
+    ³   ³   project.assets.json
+    ³   ³   project.nuget.cache
+    ³   ³   SchoolManagementSystem.UI.csproj.nuget.dgspec.json
+    ³   ³   SchoolManagementSystem.UI.csproj.nuget.g.props
+    ³   ³   SchoolManagementSystem.UI.csproj.nuget.g.targets
+    ³   ³   
+    ³   ÀÄÄÄDebug
+    ³       ÀÄÄÄnet10.0-windows
+    ³           ³   .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
+    ³           ³   AnalyticsWindow.baml
+    ³           ³   AnalyticsWindow.g.cs
+    ³           ³   AnalyticsWindow.g.i.cs
+    ³           ³   App.baml
+    ³           ³   App.g.cs
+    ³           ³   App.g.i.cs
+    ³           ³   apphost.exe
+    ³           ³   AttendanceWindow.baml
+    ³           ³   AttendanceWindow.g.cs
+    ³           ³   AttendanceWindow.g.i.cs
+    ³           ³   ClassWindow.baml
+    ³           ³   ClassWindow.g.cs
+    ³           ³   ClassWindow.g.i.cs
+    ³           ³   EmployeeWindow.baml
+    ³           ³   EmployeeWindow.g.cs
+    ³           ³   EmployeeWindow.g.i.cs
+    ³           ³   FinanceWindow.baml
+    ³           ³   FinanceWindow.g.cs
+    ³           ³   FinanceWindow.g.i.cs
+    ³           ³   GeneratedInternalTypeHelper.g.cs
+    ³           ³   GeneratedInternalTypeHelper.g.i.cs
+    ³           ³   GradeWindow.baml
+    ³           ³   GradeWindow.g.cs
+    ³           ³   GradeWindow.g.i.cs
+    ³           ³   LoginWindow.baml
+    ³           ³   LoginWindow.g.cs
+    ³           ³   LoginWindow.g.i.cs
+    ³           ³   MainDashboard.baml
+    ³           ³   MainDashboard.g.cs
+    ³           ³   MainDashboard.g.i.cs
+    ³           ³   SchoolMa.2CB0A132.Up2Date
+    ³           ³   SchoolManagementSystem.UI.AssemblyInfo.cs
+    ³           ³   SchoolManagementSystem.UI.AssemblyInfoInputs.cache
+    ³           ³   SchoolManagementSystem.UI.assets.cache
+    ³           ³   SchoolManagementSystem.UI.csproj.AssemblyReference.cache
+    ³           ³   SchoolManagementSystem.UI.csproj.CoreCompileInputs.cache
+    ³           ³   SchoolManagementSystem.UI.csproj.FileListAbsolute.txt
+    ³           ³   SchoolManagementSystem.UI.dll
+    ³           ³   SchoolManagementSystem.UI.g.resources
+    ³           ³   SchoolManagementSystem.UI.GeneratedMSBuildEditorConfig.editorconfig
+    ³           ³   SchoolManagementSystem.UI.genruntimeconfig.cache
+    ³           ³   SchoolManagementSystem.UI.GlobalUsings.g.cs
+    ³           ³   SchoolManagementSystem.UI.pdb
+    ³           ³   SchoolManagementSystem.UI_MarkupCompile.cache
+    ³           ³   SchoolManagementSystem.UI_MarkupCompile.i.cache
+    ³           ³   SchoolManagementSystem.UI_MarkupCompile.i.lref
+    ³           ³   SchoolManagementSystem.UI_MarkupCompile.lref
+    ³           ³   SchoolManagementSystem.UI_mr0avtfh_wpftmp.AssemblyInfo.cs
+    ³           ³   SchoolManagementSystem.UI_mr0avtfh_wpftmp.AssemblyInfoInputs.cache
+    ³           ³   SchoolManagementSystem.UI_mr0avtfh_wpftmp.assets.cache
+    ³           ³   SchoolManagementSystem.UI_mr0avtfh_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+    ³           ³   SchoolManagementSystem.UI_mr0avtfh_wpftmp.GlobalUsings.g.cs
+    ³           ³   StudentsWindow.baml
+    ³           ³   StudentsWindow.g.cs
+    ³           ³   StudentsWindow.g.i.cs
+    ³           ³   
+    ³           ÃÄÄÄref
+    ³           ³       SchoolManagementSystem.UI.dll
+    ³           ³       
+    ³           ÃÄÄÄrefint
+    ³           ³       SchoolManagementSystem.UI.dll
+    ³           ³       
+    ³           ÀÄÄÄViews
+    ³                   ClassTimetablePage.baml
+    ³                   ClassTimetablePage.g.cs
+    ³                   ClassTimetablePage.g.i.cs
+    ³                   TeacherTimetablePage.baml
+    ³                   TeacherTimetablePage.g.cs
+    ³                   TeacherTimetablePage.g.i.cs
+    ³                   
+    ÃÄÄÄViewModels
+    ³       ClassTimetableViewModel.cs
+    ³       TeacherTimetableViewModel.cs
+    ³       
+    ÀÄÄÄViews
+            ClassTimetablePage.xaml
+            ClassTimetablePage.xaml.cs
+            TeacherTimetablePage.xaml
+            TeacherTimetablePage.xaml.cs
+            
